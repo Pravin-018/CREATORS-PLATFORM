@@ -21,7 +21,11 @@ export async function registerUser(req, res) {
   const user = await User.create({ name, email, password: hashedPassword })
   user.password = undefined
 
-  return res.status(201).json(user)
+  return res.status(201).json({
+    success: true,
+    message: 'User registered successfully',
+    data: user,
+  })
 }
 
 export async function getAllUsers(req, res) {
