@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Button from '../components/common/Button'
+import ConnectionTest from '../components/common/ConnectionTest'
 
 function Home() {
   return (
@@ -33,6 +34,10 @@ function Home() {
               <p>Ready for full-stack integration with Express, MongoDB, and user data management.</p>
             </div>
           </div>
+        </div>
+
+        <div style={{ marginTop: '2rem' }}>
+          <ConnectionTest />
         </div>
       </div>
     </section>
