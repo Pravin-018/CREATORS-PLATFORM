@@ -1,4 +1,6 @@
 ﻿import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import MainLayout from "./layouts/MainLayout";
 
@@ -16,6 +18,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 function App() {
   return (
     <BrowserRouter>
+      <ToastContainer position="top-right" autoClose={4000} hideProgressBar={false} newestOnTop={false} closeOnClick pauseOnHover />
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />

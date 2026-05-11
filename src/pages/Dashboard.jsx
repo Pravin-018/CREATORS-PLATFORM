@@ -1,5 +1,6 @@
 ﻿import { Navigate, useNavigate } from "react-router-dom";
 import { clearAuth, getToken, getUser, isAuthenticated } from "../helpers/auth";
+import { toast } from "react-toastify";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ function Dashboard() {
 
   const handleLogout = () => {
     clearAuth();
+    toast.info('Logged out successfully');
     navigate('/login');
   };
 

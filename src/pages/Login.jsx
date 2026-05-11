@@ -1,12 +1,12 @@
 ﻿import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { isAuthenticated, saveAuth } from "../helpers/auth";
 
 function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   if (isAuthenticated()) {
@@ -15,10 +15,9 @@ function Login() {
 
   const validateForm = () => {
     if (!email.trim() || !password.trim()) {
-      setError("Email and password are required.");
+      toast.error("Email and password are required.");
       return false;
     }
-    setError("");
     return true;
   };
 
@@ -27,7 +26,6 @@ function Login() {
     if (!validateForm()) return;
 
     setLoading(true);
-    setError("");
 
     try {
       const response = await fetch('/api/auth/login', {
@@ -44,9 +42,10 @@ function Login() {
       }
 
       saveAuth(data.token, data.user);
+      toast.success('Logged in successfully');
       navigate('/dashboard');
     } catch (fetchError) {
-      setError(fetchError.message || 'Unable to login at this time');
+      toast.error(fetchError.message || 'Unable to login at this time');
     } finally {
       setLoading(false);
     }
@@ -56,7 +55,6 @@ function Login() {
     <main>
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
-        {error && <div className="error">{error}</div>}
         <label htmlFor="email">Email</label>
         <input
           id="email"

@@ -1,5 +1,6 @@
 ﻿import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { isAuthenticated, saveAuth } from "../helpers/auth";
 
 function Register() {
@@ -8,7 +9,6 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   if (isAuthenticated()) {
@@ -17,14 +17,13 @@ function Register() {
 
   const validateForm = () => {
     if (!name.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
-      setError("All fields are required.");
+      toast.error("All fields are required.");
       return false;
     }
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      toast.error("Passwords do not match.");
       return false;
     }
-    setError("");
     return true;
   };
 
@@ -33,7 +32,6 @@ function Register() {
     if (!validateForm()) return;
 
     setLoading(true);
-    setError("");
 
     try {
       const response = await fetch('/api/auth/register', {
@@ -50,9 +48,10 @@ function Register() {
       }
 
       saveAuth(data.token, data.user);
+      toast.success('Account created successfully');
       navigate('/dashboard');
     } catch (fetchError) {
-      setError(fetchError.message || 'Unable to register at this time');
+      toast.error(fetchError.message || 'Unable to register at this time');
     } finally {
       setLoading(false);
     }
@@ -62,7 +61,6 @@ function Register() {
     <main>
       <h1>Create an Account</h1>
       <form onSubmit={handleSubmit}>
-        {error && <div className="error">{error}</div>}
         <label htmlFor="name">Name</label>
         <input
           id="name"
